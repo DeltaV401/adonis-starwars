@@ -7,11 +7,13 @@
   </head>
   <body>
     <header>
-      <div class="subtitle">
-        <p>{{ name }} is here!</p>
-        <p>{{ pronoun }} is {{ height }} tall</p>
-        <p>You can learn about {{ pastTense }} homeworld <a href={{ homeworld }}>here.</a></p>
-      </div>
+      <h1 id="characterName">{{ name }}</h1>
     </header>
+    <div class="card">
+      <p>{{ name }} is here!</p>
+      <p>{{ pronoun }} is {{ height }} tall</p>
+      <p>You can learn about {{ pastTense }} homeworld - {{ homeworld }} - <a href={{ worldUrl }}>here.</a></p>
+
+    </div>
   </body>
 </html>

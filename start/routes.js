@@ -19,15 +19,18 @@ const superagent = require('superagent');
 const Route = use('Route');
 
 function getInformation(url) {
-  console.log(`it's running friend`);
   return superagent.get(url)
     .then(res => {
       console.log(res.body)
       return new Person(res.body);
     })
-    // .catch(err => {
-    //   console.error(err);
-    // })
+}
+
+function getHomeworld(url) {
+  return superagent.get(url)
+    .then(res => {
+      return new Homeworld(res.body);
+    })
 }
 
 Route.on('/').render('welcome', { username: 'Steven' });
@@ -35,14 +38,29 @@ Route.get('/star-wars-card/:id', ({ params, view }) => {
   return getInformation(`https://swapi.co/api/people/${params.id}`) // returns Promise that resolves with data
     .then(data => {
       return view.render('star-wars-card', data)
-    })
-})
+    });
+});
+Route.get('/star-wars-planet/:id', ({ params, view }) => {
+  return getHomeworld(`https://swapi.co/api/planets/${params.id}`)
+    .then(data => {
+      return view.render('star-wars-planet', data)
+    });
+});
+
+class Homeworld {
+  constructor(data) {
+    this.name = data.name,
+    this.population = data.population,
+    this.climate = `${data.climate} ${data.terrain}`
+  }
+}
 
 class Person {
   constructor(data) {
     this.name = data.name,
     this.height = data.height,
-    this.homeworld = data.homeworld,
+    this.worldUrl = data.homeworld,
+    this.homeworld = getHomeworld(this.worldUrl).name,
     this.gender = data.gender,
     this.pronoun = this.pronounCheck(),
     this.pastTense = this.pastPronoun()
