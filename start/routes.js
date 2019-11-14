@@ -18,26 +18,23 @@ const superagent = require('superagent');
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route');
 
-Route.on('/').render('welcome', { username: 'Steven' });
-Route.on('/star-wars-card').render('star-wars-card', getInformation);
+const swapiRequest = 'https://swapi.co/api/people/1';
 
-function getInformation(req, res, next) {
+function getInformation(url) {
   console.log(`it's running friend`);
-  superagent.get('https://swapi.co/api/people/v1')
+  return superagent.get(url)
     .then(res => {
-      return {
-        name: res.results.name,
-        height: res.results.height,
-        homeworld: res.results.homeworld,
-      }
+      console.log(res.body)
+      return new Person(res.body);
     })
     .catch(err => {
       console.error(err);
     })
 }
+
 Route.on('/').render('welcome', { username: 'Steven' });
 Route.get('/star-wars-card', ({ view }) => {
-  getInformation() // returns Promise that resolves with data
+  getInformation(swapiRequest) // returns Promise that resolves with data
     .then(data => {
       return view.render('star-wars-card', data)
     })
@@ -45,8 +42,8 @@ Route.get('/star-wars-card', ({ view }) => {
 
 class Person {
   constructor(data) {
-    name = data.name,
-    height = data.height,
-    homeworld = data.homeworld
+    this.name = data.name,
+    this.height = data.height,
+    this.homeworld = data.homeworld
   }
 }
