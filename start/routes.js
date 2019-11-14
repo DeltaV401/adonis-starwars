@@ -27,14 +27,14 @@ function getInformation(url) {
       console.log(res.body)
       return new Person(res.body);
     })
-    .catch(err => {
-      console.error(err);
-    })
+    // .catch(err => {
+    //   console.error(err);
+    // })
 }
 
 Route.on('/').render('welcome', { username: 'Steven' });
 Route.get('/star-wars-card', ({ view }) => {
-  getInformation(swapiRequest) // returns Promise that resolves with data
+  return getInformation(swapiRequest) // returns Promise that resolves with data
     .then(data => {
       return view.render('star-wars-card', data)
     })
