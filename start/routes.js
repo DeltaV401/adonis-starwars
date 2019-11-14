@@ -35,3 +35,18 @@ function getInformation(req, res, next) {
       console.error(err);
     })
 }
+Route.on('/').render('welcome', { username: 'Steven' });
+Route.get('/star-wars-card', ({ view }) => {
+  getInformation() // returns Promise that resolves with data
+    .then(data => {
+      return view.render('star-wars-card', data)
+    })
+})
+
+class Person {
+  constructor(data) {
+    name = data.name,
+    height = data.height,
+    homeworld = data.homeworld
+  }
+}
