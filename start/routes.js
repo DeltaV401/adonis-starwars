@@ -1,4 +1,6 @@
-'use strict'
+'use strict';
+
+const superagent = require('superagent');
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,22 @@
 */
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
-const Route = use('Route')
+const Route = use('Route');
 
-Route.on('/').render('welcome')
+Route.on('/').render('welcome', { username: 'Steven' });
+Route.on('/star-wars-card').render('star-wars-card', getInformation);
+
+function getInformation(req, res, next) {
+  console.log(`it's running friend`);
+  superagent.get('https://swapi.co/api/people/v1')
+    .then(res => {
+      return {
+        name: res.results.name,
+        height: res.results.height,
+        homeworld: res.results.homeworld,
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    })
+}
