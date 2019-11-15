@@ -18,33 +18,27 @@ const superagent = require('superagent');
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route');
 
-function getInformation(url) {
-  return superagent.get(url)
-    .then(res => {
-      console.log(res.body)
-      return new Person(res.body);
-    })
+async function getInformation(url) {
+  let person = await getPerson(url);
+  person.homeworld = await getHomeworld(person.homeworld);
+  return person;
+}
+  
+async function getPerson(url) {
+  let res = await superagent.get(url);
+  console.log(res.body);
+  return new Person(res.body);
 }
 
-function getHomeworld(url) {
-  return superagent.get(url)
-    .then(res => {
-      return new Homeworld(res.body);
-    })
+async function getHomeworld(url) {
+  let res = await superagent.get(url);
+  return new Homeworld(res.body);
 }
 
 Route.on('/').render('welcome', { username: 'Steven' });
-Route.get('/star-wars-card/:id', ({ params, view }) => {
-  return getInformation(`https://swapi.co/api/people/${params.id}`) // returns Promise that resolves with data
-    .then(data => {
-      return view.render('star-wars-card', data)
-    });
-});
-Route.get('/star-wars-planet/:id', ({ params, view }) => {
-  return getHomeworld(`https://swapi.co/api/planets/${params.id}`)
-    .then(data => {
-      return view.render('star-wars-planet', data)
-    });
+Route.get('/star-wars-card/:id', async ({ params, view }) => {
+  let data = await getInformation(`https://swapi.co/api/people/${params.id}`) // returns Promise that resolves with data
+  return view.render('star-wars-card', data);
 });
 
 class Homeworld {
@@ -59,12 +53,12 @@ class Person {
   constructor(data) {
     this.name = data.name,
     this.height = data.height,
-    this.worldUrl = data.homeworld,
-    this.homeworld = getHomeworld(this.worldUrl).then(data => {return data.name}),
+    this.homeworld = data.homeworld,
     this.gender = data.gender,
     this.pronoun = this.pronounCheck(),
     this.pastTense = this.pastPronoun(),
-    this.pronounFollower = this.proVerb()
+    this.pronounFollower = this.proVerb(),
+    this.birthyear = data.birth_year
   }
 
   pronounCheck() {
