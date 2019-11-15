@@ -60,10 +60,11 @@ class Person {
     this.name = data.name,
     this.height = data.height,
     this.worldUrl = data.homeworld,
-    this.homeworld = getHomeworld(this.worldUrl).name,
+    this.homeworld = getHomeworld(this.worldUrl).then(data => {return data.name}),
     this.gender = data.gender,
     this.pronoun = this.pronounCheck(),
-    this.pastTense = this.pastPronoun()
+    this.pastTense = this.pastPronoun(),
+    this.pronounFollower = this.proVerb()
   }
 
   pronounCheck() {
@@ -83,6 +84,14 @@ class Person {
       return 'her';
     } else if(this.gender === 'n/a') {
       return 'their';
+    }
+  }
+
+  proVerb() {
+    if(this.gender === 'n/a') {
+      return 'are';
+    } else {
+      return 'is';
     }
   }
 }
