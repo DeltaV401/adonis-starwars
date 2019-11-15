@@ -1,11 +1,48 @@
 body {
   background-color: black;
+  margin-top: 50px;
 }
 
 #characterName {
-  color: white;
+  display: block;
+  background: #fff;
+  color: black;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 100;
+  width: 400px;
+  height: 50px;
+  margin: auto;
+  text-align: center;
+  border: purple 15px solid;
+  border-radius: 25px;
+  padding: 5px auto;
 }
 
 .card {
-  color: white;
+  display: block;
+  background: #fff;
+  color: black;
+  width: 400px;
+  height: 250px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 100;
+  font-size: 1.5em;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  border: blue 15px solid;
+  border-radius: 25px;
+
+}
+.starwarslogo {
+  background: url("./StarWars.png") no-repeat;
+  width: 400px;
+  height: 300px;
+  background-size: 100%;
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 35px;
+  opacity: 0;
+  animation: slideUp 1s cubic-bezier(0.19, 1, 0.30, 1) 1.3s forwards;
 }
