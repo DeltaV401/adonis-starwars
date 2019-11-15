@@ -21,18 +21,29 @@ const Route = use('Route');
 async function getInformation(url) {
   let person = await getPerson(url);
   person.homeworld = await getHomeworld(person.homeworld);
+  console.log(person.films);
+  person.films = await getFilms(person.films);
+  console.log(person.films);
   return person;
 }
   
 async function getPerson(url) {
   let res = await superagent.get(url);
-  console.log(res.body);
   return new Person(res.body);
 }
 
 async function getHomeworld(url) {
   let res = await superagent.get(url);
   return new Homeworld(res.body);
+}
+
+async function getFilms(urls) {
+  let films = [];
+  urls.forEach(async url => {
+    let res = await superagent.get(url)
+    await films.push(res.body.title);
+  })
+  return films.join(', ');
 }
 
 Route.on('/').render('welcome', { username: 'Steven' });
@@ -58,7 +69,8 @@ class Person {
     this.pronoun = this.pronounCheck(),
     this.pastTense = this.pastPronoun(),
     this.pronounFollower = this.proVerb(),
-    this.birthyear = data.birth_year
+    this.birthyear = data.birth_year,
+    this.films = data.films
   }
 
   pronounCheck() {
