@@ -26,6 +26,7 @@ async function getInformation(url) {
   
 async function getPerson(url) {
   let res = await superagent.get(url);
+  console.log(res.body);
   return new Person(res.body);
 }
 
@@ -37,7 +38,7 @@ async function getHomeworld(url) {
 Route.on('/').render('welcome', { username: 'Steven' });
 Route.get('/star-wars-card/:id', async ({ params, view }) => {
   let data = await getInformation(`https://swapi.co/api/people/${params.id}`) // returns Promise that resolves with data
-  view.render('star-wars-card', data);
+  return view.render('star-wars-card', data);
 });
 
 class Homeworld {
@@ -56,7 +57,8 @@ class Person {
     this.gender = data.gender,
     this.pronoun = this.pronounCheck(),
     this.pastTense = this.pastPronoun(),
-    this.pronounFollower = this.proVerb()
+    this.pronounFollower = this.proVerb(),
+    this.birthyear = data.birth_year
   }
 
   pronounCheck() {
