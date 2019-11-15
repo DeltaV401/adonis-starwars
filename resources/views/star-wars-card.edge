@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Star Wars Cards</title>
+    {{ style('style') }}
+    {{ style('star-wars') }}
+  </head>
+  <body>
+    <header>
+      <h1 id="characterName">{{ name }}</h1>
+    </header>
+    <div class="card">
+      <p>{{ name }} is here!</p>
+      <p>{{ pronoun }} {{ pronounFollower }} {{ height / 100 }}m tall</p>
+      <p>You can learn about {{ pastTense }} homeworld - {{ homeworld }} - <a href={{ worldUrl }}>here.</a></p>
+    </div>
+  </body>
+</html>
