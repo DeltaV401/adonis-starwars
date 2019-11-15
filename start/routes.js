@@ -41,7 +41,8 @@ async function getFilms(urls) {
   let films = [];
   urls.forEach(async url => {
     let res = await superagent.get(url)
-    await films.push(res.body.title);
+    let film = new Film(res.body);
+    films.push(film.title);
   })
   return films.join(', ');
 }
@@ -51,6 +52,13 @@ Route.get('/star-wars-card/:id', async ({ params, view }) => {
   let data = await getInformation(`https://swapi.co/api/people/${params.id}`) // returns Promise that resolves with data
   return view.render('star-wars-card', data);
 });
+
+class Film {
+  constructor(data) {
+    this.title = data.title,
+    this.release = data.release_date
+  }
+}
 
 class Homeworld {
   constructor(data) {
